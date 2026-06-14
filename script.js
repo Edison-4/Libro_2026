@@ -2,20 +2,21 @@
 // 1. LÓGICA DE LA PILA DE CARTAS (STACK)
 // ==========================================
 let pages = Array.from(document.querySelectorAll('.page'));
+const btnBack = document.getElementById('btn-back');
 
 function actualizarPila() {
     pages.forEach((page, index) => {
-        // Orden de capas: la primera (index 0) va hasta arriba
+        // Orden de capas
         page.style.zIndex = pages.length - index;
 
         if (index === 0) {
             page.style.transform = `scale(1) translateY(0)`;
             page.style.opacity = '1';
-            page.style.pointerEvents = 'auto'; // Se puede tocar
+            page.style.pointerEvents = 'auto'; 
         } else if (index === 1) {
             page.style.transform = `scale(0.95) translateY(20px)`;
             page.style.opacity = '1';
-            page.style.pointerEvents = 'none'; // No se puede tocar
+            page.style.pointerEvents = 'none'; 
         } else if (index === 2) {
             page.style.transform = `scale(0.9) translateY(40px)`;
             page.style.opacity = '1';
@@ -26,24 +27,27 @@ function actualizarPila() {
             page.style.pointerEvents = 'none';
         }
     });
+
+    // NUEVO: Verificamos si la carta que está hasta arriba es la Portada
+    if (pages[0].classList.contains('cover-page')) {
+        // Si es la portada, desactivamos el botón de volver
+        btnBack.classList.add('disabled');
+    } else {
+        // Si es cualquier otra carta, lo reactivamos
+        btnBack.classList.remove('disabled');
+    }
 }
 
 // Lógica para avanzar a la siguiente tarjeta
 pages.forEach(page => {
     page.addEventListener('click', (e) => {
-        // Evitamos avanzar si hicieron clic en el botón de "Copiar"
         if (e.target.closest('.copy-btn')) return;
-
-        // Solo la carta de hasta arriba avanza
         if (page !== pages[0]) return;
 
-        // Animación de salida
         page.classList.add('swipe-out');
 
         setTimeout(() => {
             page.classList.remove('swipe-out');
-            
-            // Movemos la primera carta al final
             pages.push(pages.shift());
             actualizarPila();
         }, 400); 
@@ -51,26 +55,20 @@ pages.forEach(page => {
 });
 
 // Lógica para retroceder a la tarjeta anterior
-const btnBack = document.getElementById('btn-back');
-
 btnBack.addEventListener('click', () => {
-    // Tomamos la carta que está al fondo del arreglo (la última que pasamos)
+    // NUEVO: Si el botón tiene la clase 'disabled', cancelamos la acción
+    if (btnBack.classList.contains('disabled')) return;
+
     const cartaAnterior = pages.pop();
-    
-    // La colocamos al principio del arreglo
     pages.unshift(cartaAnterior);
 
-    // Truco visual: la ponemos en posición de "salida" sin animación 
-    // para que parezca que viene regresando desde la derecha
     cartaAnterior.style.transition = 'none';
     cartaAnterior.classList.add('swipe-out');
 
     actualizarPila();
 
-    // Forzamos al navegador a procesar la posición invisible antes de animarla
     void cartaAnterior.offsetWidth;
 
-    // Le devolvemos su transición y la traemos al centro
     cartaAnterior.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
     cartaAnterior.classList.remove('swipe-out');
 });
