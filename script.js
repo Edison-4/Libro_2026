@@ -1,88 +1,71 @@
 // ==========================================
-// 1. LÓGICA DEL ÁLBUM Y PASO DE PÁGINAS
+// 1. CONFIGURACIÓN DEL SONIDO AL DESLIZAR
+// (Actualmente comentado/desactivado para uso futuro)
 // ==========================================
-const pages = document.querySelectorAll('.page');
-const btnPrev = document.getElementById('btn-prev');
-const btnNext = document.getElementById('btn-next');
-const pageTurnSound = new Audio('pagina.mp3');
 
-let currentIndex = 0; // Controla qué página estamos viendo
+/*
+const baseAudio = new Audio('pagina.mp3'); 
+let isFirstLoad = true; 
+let paginaActual = null;
 
-function updateBook() {
-    // Detectamos si estamos en móvil (pantalla pequeña) o en PC
-    const isMobile = window.innerWidth <= 768;
-    const pagesToShow = isMobile ? 1 : 2; // Móvil muestra 1, PC muestra 2
-
-    // Primero ocultamos todas las páginas
-    pages.forEach(page => page.classList.remove('active'));
-
-    // Mostramos las páginas que corresponden al índice actual
-    if (pages[currentIndex]) {
-        pages[currentIndex].classList.add('active');
-    }
-    
-    // Si estamos en PC, mostramos también la página de la derecha
-    if (!isMobile && pages[currentIndex + 1]) {
-        pages[currentIndex + 1].classList.add('active');
-    }
-
-    // Apagamos los botones si llegamos al principio o al final
-    btnPrev.disabled = currentIndex === 0;
-    btnNext.disabled = currentIndex + pagesToShow >= pages.length;
-}
-
-function turnPage(forward) {
-    const isMobile = window.innerWidth <= 768;
-    const step = isMobile ? 1 : 2; // Avanzamos de 1 en 1, o de 2 en 2
-
-    if (forward && currentIndex + step < pages.length) {
-        currentIndex += step;
-        playSound();
-    } else if (!forward && currentIndex - step >= 0) {
-        currentIndex -= step;
-        playSound();
-    }
-    updateBook();
-}
-
-// Reproduce el sonido de la página
-function playSound() {
-    const clone = pageTurnSound.cloneNode();
-    clone.play().catch(e => console.log('Haz clic en la página primero para habilitar el audio.'));
-}
-
-// Escuchar clics en las flechas
-btnNext.addEventListener('click', () => turnPage(true));
-btnPrev.addEventListener('click', () => turnPage(false));
-
-// Recalcular si el usuario voltea el teléfono o redimensiona la ventana
-window.addEventListener('resize', () => {
-    updateBook();
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            if (!isFirstLoad && paginaActual !== entry.target) {
+                paginaActual = entry.target;
+                const sonidoClonado = baseAudio.cloneNode();
+                sonidoClonado.play().catch(error => {
+                    console.log("Haz clic en la página una vez para habilitar el sonido.");
+                });
+            } else if (isFirstLoad) {
+                paginaActual = entry.target;
+            }
+        }
+    });
+}, {
+    root: document.querySelector('.album-container'),
+    threshold: 0.6 
 });
 
+document.querySelectorAll('.page').forEach(page => observer.observe(page));
+setTimeout(() => { isFirstLoad = false; }, 200);
+*/
 
 // ==========================================
 // 2. CONFIGURACIÓN DEL BOTÓN DE COPIAR
 // ==========================================
-document.querySelectorAll('.copy-btn').forEach(btn => {
+const copyButtons = document.querySelectorAll('.copy-btn');
+const toast = document.getElementById('toast'); // Capturamos el mensaje flotante
+
+// Función para manejar los temporizadores del toast y evitar que se crucen si presionas varias veces
+let toastTimeout;
+
+copyButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
-        // Buscamos el texto dentro del contenido de la tarjeta actual
-        const content = e.target.closest('.page-content');
-        const text = content.querySelector('.quote-text').innerText;
-        const author = content.querySelector('.quote-author').innerText;
+        // Encontrar la tarjeta exacta donde se hizo clic
+        const card = e.target.closest('.page');
+        const text = card.querySelector('.quote-text').innerText;
+        const author = card.querySelector('.quote-author').innerText;
         
+        // Unir frase y autor
         const textoCompleto = `${text}\n${author}`;
 
+        // Copiar al portapapeles
         navigator.clipboard.writeText(textoCompleto).then(() => {
-            const originalIcon = e.target.innerText;
-            e.target.innerText = '✔️';
             
-            setTimeout(() => {
-                e.target.innerText = originalIcon;
-            }, 2000);
-        }).catch(err => console.error('Error al copiar: ', err));
+            // Mostrar el mensaje flotante
+            toast.classList.add('show');
+            
+            // Limpiar cualquier temporizador anterior por si el usuario presiona "Copiar" muy rápido
+            clearTimeout(toastTimeout);
+            
+            // Ocultar el mensaje después de 2.5 segundos
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+
+        }).catch(err => {
+            console.error('Error al copiar: ', err);
+        });
     });
 });
-
-// Arrancar el álbum mostrando la primera página
-updateBook();
