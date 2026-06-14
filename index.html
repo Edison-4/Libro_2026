@@ -7,46 +7,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <div class="album-stage">
-        <button id="btn-prev" class="nav-btn">❮</button>
-        
-        <div class="open-book" id="book">
-            
-            <div class="page cover-page">
-                <div class="page-content">
-                    <h1 class="cover-title">A Story<br>to Tell</h1>
-                    <p class="cover-subtitle">Álbum de colección</p>
-                </div>
-            </div>
+    <div class="album-container">
 
-            <div class="page">
-                <div class="page-content">
-                    <p class="quote-text">"A veces, el código más eficiente es el que decides no escribir."</p>
-                    <p class="quote-author">— Anónimo</p>
-                    <button class="copy-btn" title="Copiar frase">📋</button>
-                </div>
-            </div>
+        <div class="page cover-page">
+            <h1 class="cover-title">A Story<br>to Tell</h1>
+            <p class="cover-subtitle">Desliza para abrir ➔</p>
+        </div>
 
-            <div class="page">
-                <div class="page-content">
-                    <p class="quote-text">"La creatividad es la inteligencia divirtiéndose."</p>
-                    <p class="quote-author">— Albert Einstein</p>
-                    <button class="copy-btn" title="Copiar frase">📋</button>
-                </div>
-            </div>
+        <div class="page">
+            <p class="quote-text">"A veces, el código más eficiente es el que decides no escribir."</p>
+            <p class="quote-author">— Anónimo</p>
+            <button class="copy-btn">Copiar</button>
+        </div>
 
-            <div class="page">
-                <div class="page-content">
-                    <p class="quote-text">"Escribe aquí tu nueva frase."</p>
-                    <p class="quote-author">— Nombre del autor</p>
-                    <button class="copy-btn" title="Copiar frase">📋</button>
-                </div>
-            </div>
-            </div>
+        <div class="page">
+            <p class="quote-text">"La creatividad es la inteligencia divirtiéndose."</p>
+            <p class="quote-author">— Albert Einstein</p>
+            <button class="copy-btn">Copiar</button>
+        </div>
 
-        <button id="btn-next" class="nav-btn">❯</button>
-    </div>
+        <div class="page">
+            <p class="quote-text">"Escribe aquí tu nueva frase."</p>
+            <p class="quote-author">— Nombre del autor</p>
+            <button class="copy-btn">Copiar</button>
+        </div>
+        </div>
+
+    <div id="toast" class="toast">Se ha copiado al portapapeles</div>
 
     <script src="script.js"></script>
 </body>
