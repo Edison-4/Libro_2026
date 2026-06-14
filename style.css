@@ -42,8 +42,6 @@ body {
     padding: 40px;
     text-align: center;
     box-shadow: 8px 8px 16px #0b0b0b, -8px -8px 16px #191919;
-    
-    /* La transición suave al cambiar de posición en la pila */
     transition: transform 0.4s ease, opacity 0.4s ease;
     cursor: pointer;
     user-select: none;
@@ -140,6 +138,17 @@ body {
 
 .back-btn:hover {
     color: #ffffff;
+}
+
+/* NUEVO: Estilo para cuando el botón de volver está desactivado */
+.back-btn.disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.back-btn.disabled:hover {
+    color: #888; /* Evita que brille si está desactivado */
 }
 
 /* Mensaje flotante (Toast) */
