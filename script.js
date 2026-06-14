@@ -9,22 +9,18 @@ function actualizarPila() {
         page.style.zIndex = pages.length - index;
 
         if (index === 0) {
-            // Carta principal (la que ves de frente)
             page.style.transform = `scale(1) translateY(0)`;
             page.style.opacity = '1';
             page.style.pointerEvents = 'auto'; // Se puede tocar
         } else if (index === 1) {
-            // Segunda carta (asoma por detrás)
             page.style.transform = `scale(0.95) translateY(20px)`;
             page.style.opacity = '1';
-            page.style.pointerEvents = 'none'; // No se puede tocar para no hacer interferencia
+            page.style.pointerEvents = 'none'; // No se puede tocar
         } else if (index === 2) {
-            // Tercera carta (asoma más abajo)
             page.style.transform = `scale(0.9) translateY(40px)`;
             page.style.opacity = '1';
             page.style.pointerEvents = 'none';
         } else {
-            // El resto de cartas están ocultas detrás
             page.style.transform = `scale(0.85) translateY(60px)`;
             page.style.opacity = '0';
             page.style.pointerEvents = 'none';
@@ -32,30 +28,51 @@ function actualizarPila() {
     });
 }
 
-// Darle el efecto a cada tarjeta al hacer clic
+// Lógica para avanzar a la siguiente tarjeta
 pages.forEach(page => {
     page.addEventListener('click', (e) => {
-        
-        // ¡IMPORTANTE! Si el usuario hizo clic en el botón de "Copiar", no cambiamos de página
+        // Evitamos avanzar si hicieron clic en el botón de "Copiar"
         if (e.target.closest('.copy-btn')) return;
 
-        // Solo la carta que está hasta arriba (índice 0) puede interactuar
+        // Solo la carta de hasta arriba avanza
         if (page !== pages[0]) return;
 
-        // 1. Le agregamos la clase que hace volar la carta hacia la derecha
+        // Animación de salida
         page.classList.add('swipe-out');
 
-        // 2. Esperamos a que termine la animación (400ms) y luego reordenamos
         setTimeout(() => {
             page.classList.remove('swipe-out');
             
-            // Movemos el primer elemento de la lista al final (bucle infinito)
+            // Movemos la primera carta al final
             pages.push(pages.shift());
-            
-            // Re-calculamos las posiciones visuales
             actualizarPila();
         }, 400); 
     });
+});
+
+// Lógica para retroceder a la tarjeta anterior
+const btnBack = document.getElementById('btn-back');
+
+btnBack.addEventListener('click', () => {
+    // Tomamos la carta que está al fondo del arreglo (la última que pasamos)
+    const cartaAnterior = pages.pop();
+    
+    // La colocamos al principio del arreglo
+    pages.unshift(cartaAnterior);
+
+    // Truco visual: la ponemos en posición de "salida" sin animación 
+    // para que parezca que viene regresando desde la derecha
+    cartaAnterior.style.transition = 'none';
+    cartaAnterior.classList.add('swipe-out');
+
+    actualizarPila();
+
+    // Forzamos al navegador a procesar la posición invisible antes de animarla
+    void cartaAnterior.offsetWidth;
+
+    // Le devolvemos su transición y la traemos al centro
+    cartaAnterior.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+    cartaAnterior.classList.remove('swipe-out');
 });
 
 // Arrancamos la vista inicial
@@ -94,5 +111,5 @@ copyButtons.forEach(btn => {
 // 3. AUDIO (Comentado para futuro uso)
 // ==========================================
 const baseAudio = new Audio('pagina.mp3'); 
-// Puedes llamar a `baseAudio.cloneNode().play()` dentro del setTimeout de arriba si luego quieres sonido.
+// baseAudio.cloneNode().play();
 */
