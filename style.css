@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #121212; /* Fondo oscuro */
+    background-color: #121212;
     color: #ffffff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
@@ -17,56 +17,47 @@ body {
     overflow: hidden;
 }
 
-/* Contenedor del Álbum */
-.album-container {
-    display: flex;
-    gap: 30px;
-    padding: 20px 40px;
-    width: 100vw;
-    max-width: 900px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory; /* Efecto de ajuste al hacer scroll */
-    scrollbar-width: none; /* Oculta la barra en Firefox */
-    
-    /* PROPIEDADES PARA REDUCIR SENSIBILIDAD */
-    scroll-behavior: smooth;
-    overscroll-behavior-x: contain;
-}
-
-.album-container::-webkit-scrollbar {
-    display: none; /* Oculta la barra en Chrome/Safari */
+/* Contenedor de la Pila */
+.stack-container {
+    position: relative;
+    width: 320px;
+    height: 450px;
+    margin-top: 20px;
 }
 
 /* Diseño de cada página (Tarjeta) */
 .page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(145deg, #1e1e1e, #181818);
     border: 1px solid #333;
     border-radius: 15px;
-    min-width: 320px;
-    max-width: 320px;
-    height: 450px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 40px;
     text-align: center;
-    scroll-snap-align: center; /* Punto de anclaje del scroll */
     box-shadow: 8px 8px 16px #0b0b0b, -8px -8px 16px #191919;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
     
-    /* FRENO: Evita saltarse páginas al deslizar rápido */
-    scroll-snap-stop: always;
+    /* La transición suave al cambiar de posición en la pila */
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    cursor: pointer;
+    user-select: none;
 }
 
-.page:hover {
-    transform: translateY(-10px);
-    box-shadow: 12px 12px 20px #080808, -12px -12px 20px #1c1c1c;
+/* Clase de animación para cuando la carta sale volando */
+.page.swipe-out {
+    transform: translateX(120%) rotate(15deg) !important;
+    opacity: 0 !important;
+    pointer-events: none;
 }
 
 /* ========================================= */
-/* DISEÑO ESPECÍFICO DE LA PORTADA           */
+/* DISEÑO DE LA PORTADA                      */
 /* ========================================= */
 .cover-page {
     background: linear-gradient(145deg, #0f0f0f, #050505);
@@ -96,8 +87,8 @@ body {
     50% { opacity: 1; }
     100% { opacity: 0.4; }
 }
-/* ========================================= */
 
+/* Textos */
 .quote-text {
     font-size: 1.3rem;
     font-style: italic;
@@ -125,6 +116,8 @@ body {
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 10; /* Para que sea clickeable por encima del fondo */
 }
 
 .copy-btn:hover {
@@ -133,9 +126,7 @@ body {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* ========================================= */
-/* DISEÑO DEL MENSAJE FLOTANTE (TOAST)       */
-/* ========================================= */
+/* Mensaje flotante (Toast) */
 .toast {
     visibility: hidden;
     min-width: 250px;
@@ -147,14 +138,15 @@ body {
     padding: 16px;
     position: fixed;
     z-index: 1000;
-    bottom: 20px; /* Posición inicial oculta más abajo */
+    bottom: 20px;
     font-size: 1rem;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
     opacity: 0;
     transition: opacity 0.4s ease, bottom 0.4s ease, visibility 0.4s ease;
 }
 
-/* Clase que se activa con JavaScript para mostrar el mensaje */
 .toast.show {
     visibility: visible;
     opacity: 1;
+    bottom: 50px;
+}
