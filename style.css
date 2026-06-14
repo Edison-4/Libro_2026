@@ -6,180 +6,150 @@
 }
 
 body {
-    background-color: #0a0a0a; /* Fondo muy oscuro, estilo mesa de noche */
+    background-color: #121212; /* Fondo oscuro */
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
 }
 
-/* Escenario y botones de navegación */
-.album-stage {
+/* Contenedor del Álbum */
+.album-container {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    justify-content: center;
-    padding: 20px;
-}
-
-.nav-btn {
-    background: none;
-    border: none;
-    color: #555;
-    font-size: 3rem;
-    cursor: pointer;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.nav-btn:hover {
-    color: #ffffff;
-    transform: scale(1.1);
-}
-
-.nav-btn:disabled {
-    color: #222;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* El Libro Abierto */
-.open-book {
-    display: flex;
-    width: 100%;
+    gap: 30px;
+    padding: 20px 40px;
+    width: 100vw;
     max-width: 900px;
-    height: 550px;
-    background: #121212; /* Color de las pastas */
-    border-radius: 12px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.9), inset 0 0 10px rgba(255,255,255,0.05);
-    position: relative;
-    overflow: hidden;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* Efecto de ajuste al hacer scroll */
+    scrollbar-width: none; /* Oculta la barra en Firefox */
 }
 
-/* Doblez / Lomo del centro del libro */
-.open-book::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 40px;
-    background: linear-gradient(to right, 
-        rgba(0,0,0,0.8) 0%, 
-        rgba(255,255,255,0.03) 50%, 
-        rgba(0,0,0,0.8) 100%);
-    transform: translateX(-50%);
-    z-index: 10;
-    pointer-events: none;
+.album-container::-webkit-scrollbar {
+    display: none; /* Oculta la barra en Chrome/Safari */
 }
 
-/* Estructura de las páginas */
+/* Diseño de cada página (Tarjeta) */
 .page {
-    flex: 1; /* Cada página ocupa la mitad del libro */
-    display: none; /* Ocultas por defecto */
-    padding: 30px;
-    position: relative;
-}
-
-/* Cuando la página está visible */
-.page.active {
-    display: flex;
-    animation: fadeInPage 0.4s ease-in-out;
-}
-
-@keyframes fadeInPage {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Espacio donde va el texto (simula el "cromo" o área de impresión) */
-.page-content {
-    width: 100%;
-    height: 100%;
-    border: 1px dashed #333;
+    background: linear-gradient(145deg, #1e1e1e, #181818);
+    border: 1px solid #333;
+    border-radius: 15px;
+    min-width: 320px;
+    max-width: 320px;
+    height: 450px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 40px;
     text-align: center;
-    background: linear-gradient(145deg, #181818, #141414);
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-    border-radius: 8px;
+    scroll-snap-align: center; /* Punto de anclaje del scroll */
+    box-shadow: 8px 8px 16px #0b0b0b, -8px -8px 16px #191919;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 }
 
-/* Textos e interiores */
+.page:hover {
+    transform: translateY(-10px);
+    box-shadow: 12px 12px 20px #080808, -12px -12px 20px #1c1c1c;
+}
+
+/* ========================================= */
+/* DISEÑO ESPECÍFICO DE LA PORTADA           */
+/* ========================================= */
+.cover-page {
+    background: linear-gradient(145deg, #0f0f0f, #050505);
+    border: 1px solid #222;
+}
+
+.cover-title {
+    font-size: 3rem;
+    font-family: 'Georgia', serif;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.cover-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+/* ========================================= */
+
 .quote-text {
     font-size: 1.3rem;
     font-style: italic;
-    color: #e0e0e0;
     line-height: 1.6;
     margin-bottom: 20px;
+    color: #e0e0e0;
 }
 
 .quote-author {
     font-size: 1rem;
     color: #888;
+    font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-weight: bold;
-}
-
-/* Estilo exclusivo para la Portada */
-.cover-page .page-content {
-    background: #080808;
-    border: 2px solid #222;
-}
-
-.cover-title {
-    font-size: 3.5rem;
-    font-family: 'Georgia', serif;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    color: #ffffff;
-    line-height: 1.1;
-    margin-bottom: 20px;
-}
-
-.cover-subtitle {
-    font-size: 1rem;
-    color: #666;
-    letter-spacing: 3px;
-    text-transform: uppercase;
 }
 
 /* Botón de copiar */
 .copy-btn {
-    margin-top: 25px;
-    background: none;
-    border: none;
-    color: #666;
-    font-size: 1.5rem;
+    margin-top: 20px;
+    background: transparent;
+    border: 1px solid #555;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: #888;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: transform 0.2s, color 0.2s;
+    transition: all 0.3s ease;
 }
 
 .copy-btn:hover {
-    transform: scale(1.2);
     color: #fff;
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Adaptación inteligente para teléfonos móviles */
-@media (max-width: 768px) {
-    .open-book {
-        height: 80vh; /* Más alto en móviles */
-    }
-    .open-book::after {
-        display: none; /* Quitamos el doblez central porque solo habrá 1 página */
-    }
-    .page {
-        flex: none;
-        width: 100%;
-        padding: 15px;
-    }
-    .cover-title {
-        font-size: 2.5rem;
-    }
+/* ========================================= */
+/* DISEÑO DEL MENSAJE FLOTANTE (TOAST)       */
+/* ========================================= */
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #2a2a2a;
+    color: #fff;
+    text-align: center;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1000;
+    bottom: 20px; /* Posición inicial oculta más abajo */
+    font-size: 1rem;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: opacity 0.4s ease, bottom 0.4s ease, visibility 0.4s ease;
+}
+
+/* Clase que se activa con JavaScript para mostrar el mensaje */
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px; /* Sube ligeramente al aparecer */
 }
