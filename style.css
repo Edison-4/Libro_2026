@@ -17,22 +17,6 @@ body {
     overflow: hidden;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.header h1 {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-}
-
-.header p {
-    color: #a0a0a0;
-    font-size: 1rem;
-    margin-top: 5px;
-}
-
 /* Contenedor del Álbum */
 .album-container {
     display: flex;
@@ -73,6 +57,39 @@ body {
     transform: translateY(-10px);
     box-shadow: 12px 12px 20px #080808, -12px -12px 20px #1c1c1c;
 }
+
+/* ========================================= */
+/* DISEÑO ESPECÍFICO DE LA PORTADA           */
+/* ========================================= */
+.cover-page {
+    background: linear-gradient(145deg, #0f0f0f, #050505);
+    border: 1px solid #222;
+}
+
+.cover-title {
+    font-size: 3rem;
+    font-family: 'Georgia', serif; /* Letra estilo libro/literaria */
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.cover-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+/* ========================================= */
 
 .quote-text {
     font-size: 1.3rem;
