@@ -27,6 +27,10 @@ body {
     overflow-x: auto;
     scroll-snap-type: x mandatory; /* Efecto de ajuste al hacer scroll */
     scrollbar-width: none; /* Oculta la barra en Firefox */
+    
+    /* PROPIEDADES PARA REDUCIR SENSIBILIDAD */
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
 }
 
 .album-container::-webkit-scrollbar {
@@ -51,6 +55,9 @@ body {
     box-shadow: 8px 8px 16px #0b0b0b, -8px -8px 16px #191919;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
+    
+    /* FRENO: Evita saltarse páginas al deslizar rápido */
+    scroll-snap-stop: always;
 }
 
 .page:hover {
@@ -151,5 +158,3 @@ body {
 .toast.show {
     visibility: visible;
     opacity: 1;
-    bottom: 50px; /* Sube ligeramente al aparecer */
-}
