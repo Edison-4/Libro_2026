@@ -1,0 +1,107 @@
+/* Configuraciones generales */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #121212; /* Fondo oscuro */
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+}
+
+.header p {
+    color: #a0a0a0;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+/* Contenedor del Álbum */
+.album-container {
+    display: flex;
+    gap: 30px;
+    padding: 20px 40px;
+    width: 100vw;
+    max-width: 900px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* Efecto de ajuste al hacer scroll */
+    scrollbar-width: none; /* Oculta la barra en Firefox */
+}
+
+.album-container::-webkit-scrollbar {
+    display: none; /* Oculta la barra en Chrome/Safari */
+}
+
+/* Diseño de cada página (Tarjeta) */
+.page {
+    background: linear-gradient(145deg, #1e1e1e, #181818);
+    border: 1px solid #333;
+    border-radius: 15px;
+    min-width: 320px;
+    max-width: 320px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+    scroll-snap-align: center; /* Punto de anclaje del scroll */
+    box-shadow: 8px 8px 16px #0b0b0b, -8px -8px 16px #191919;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.page:hover {
+    transform: translateY(-10px);
+    box-shadow: 12px 12px 20px #080808, -12px -12px 20px #1c1c1c;
+}
+
+.quote-text {
+    font-size: 1.3rem;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+}
+
+.quote-author {
+    font-size: 1rem;
+    color: #888;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Botón de copiar */
+.copy-btn {
+    margin-top: 20px;
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.copy-btn:hover {
+    transform: scale(1.2);
+    filter: brightness(1.5);
+}
